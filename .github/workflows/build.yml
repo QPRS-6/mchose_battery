@@ -1,0 +1,52 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libudev-dev
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Test
+        run: cargo test --all-targets
+      - name: Build
+        run: cargo build --release --locked
+      - name: Package
+        run: |
+          mkdir -p dist
+          cp target/release/mchose-battery dist/
+          cp packaging/arch/90-mchose-battery.rules dist/
+          cp packaging/arch/install.sh dist/
+          cp packaging/arch/uninstall.sh dist/
+          cp packaging/arch/mchose-battery.desktop dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mchose-battery-linux-x86_64
+          path: dist/
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build
+        run: cargo build --release --locked
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item target/release/mchose-battery.exe dist/
+          Copy-Item packaging/windows/install.ps1 dist/
+          Copy-Item packaging/windows/uninstall.ps1 dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mchose-battery-windows-x86_64
+          path: dist/

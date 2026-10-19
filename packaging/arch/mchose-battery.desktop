@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=MCHOSE Battery
+Name[zh_CN]=迈从鼠标电量
+Comment=Show MCHOSE mouse battery in the system tray
+Comment[zh_CN]=在系统托盘显示迈从鼠标电量
+Exec=mchose-battery
+Icon=battery-good
+Terminal=false
+Categories=Utility;
+StartupNotify=false

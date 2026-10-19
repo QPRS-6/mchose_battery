@@ -1,0 +1,15 @@
+pkgbase = mchose-battery
+	pkgdesc = Show MCHOSE / 迈从 mouse battery in the KDE system tray
+	pkgver = 0.1.0
+	pkgrel = 1
+	url = https://github.com/
+	install = mchose-battery.install
+	arch = x86_64
+	license = MIT
+	makedepends = cargo
+	makedepends = systemd-libs
+	depends = glibc
+	depends = systemd-libs
+	depends = dbus
+
+pkgname = mchose-battery

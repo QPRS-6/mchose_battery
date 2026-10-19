@@ -1,0 +1,14 @@
+post_install() {
+    udevadm control --reload-rules
+    udevadm trigger --subsystem-match=hidraw
+    echo "MCHOSE Battery 已安装。请重新插拔鼠标接收器，或重新登录后再启动。"
+}
+
+post_upgrade() {
+    post_install
+}
+
+post_remove() {
+    udevadm control --reload-rules
+    udevadm trigger --subsystem-match=hidraw
+}

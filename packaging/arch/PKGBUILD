@@ -1,0 +1,30 @@
+# Maintainer: MCHOSE Battery contributors
+# Local PKGBUILD: run `makepkg -si` from this directory after placing the source
+# tree at ../.. (i.e. packaging/arch/../.. is the Cargo project root).
+pkgname=mchose-battery
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='Show MCHOSE / 迈从 mouse battery in the KDE system tray'
+arch=('x86_64')
+url='https://github.com/QPRS-6/mchose_battery'
+license=('MIT')
+depends=('glibc' 'systemd-libs' 'dbus')
+makedepends=('cargo' 'systemd-libs')
+install=mchose-battery.install
+source=()
+sha256sums=()
+
+build() {
+    cd "$startdir/../.."
+    cargo build --release --locked
+}
+
+package() {
+    local root="$startdir/../.."
+    install -Dm755 "$root/target/release/mchose-battery" \
+        "$pkgdir/usr/bin/mchose-battery"
+    install -Dm644 "$root/packaging/arch/90-mchose-battery.rules" \
+        "$pkgdir/usr/lib/udev/rules.d/90-mchose-battery.rules"
+    install -Dm644 "$root/packaging/arch/mchose-battery.desktop" \
+        "$pkgdir/usr/share/applications/mchose-battery.desktop"
+}

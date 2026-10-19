@@ -1,0 +1,18 @@
+# MCHOSE / 迈从 mice: give the logged-in desktop user access to the vendor
+# hidraw nodes so the battery utility can open them without running as root.
+#
+# Install:
+#   sudo install -Dm644 90-mchose-battery.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload-rules
+#   sudo udevadm trigger --subsystem-match=hidraw
+#
+# Then unplug/replug the mouse or receiver (uaccess ACLs are applied on change).
+
+# 90-* runs after systemd's 73-seat-late.rules, so explicitly run the uaccess
+# builtin here; TAG alone would be too late for 73-seat-late to queue it.
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="3837", TAG+="uaccess", RUN{builtin}+="uaccess"
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="41e4", TAG+="uaccess", RUN{builtin}+="uaccess"
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="2023", TAG+="uaccess", RUN{builtin}+="uaccess"
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="5253", TAG+="uaccess", RUN{builtin}+="uaccess"
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="a8a4", TAG+="uaccess", RUN{builtin}+="uaccess"
+SUBSYSTEM=="hidraw", KERNEL=="hidraw*", ATTRS{idVendor}=="a8a5", TAG+="uaccess", RUN{builtin}+="uaccess"
